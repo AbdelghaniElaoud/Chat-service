@@ -1,6 +1,7 @@
 package com.abdelghani.chatservice.entities;
 
 import com.abdelghani.chatservice.controller.WsChatMessageType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

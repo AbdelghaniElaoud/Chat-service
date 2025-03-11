@@ -35,4 +35,16 @@ public class WebSocketService {
         // Broadcast the message to all connected clients
         messagingTemplate.convertAndSend("/topic/public", message);
     }
+
+    public String addUser(String username){
+        User userOptional = userRepository.findByUsername(username);
+        if (!(userOptional == null)){
+            throw new RuntimeException("User already in the databse");
+        }
+        User user = User.builder()
+                .username(username)
+                .build();
+        userRepository.save(user);
+        return username;
+    }
 }
