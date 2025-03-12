@@ -15,6 +15,7 @@ public class WsChatMessage {
 
     private Long id;
     private String sender;
+    private String recipient;
     private String content;
     private WsChatMessageType type;
 

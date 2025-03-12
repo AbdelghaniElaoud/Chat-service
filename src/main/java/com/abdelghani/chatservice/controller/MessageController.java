@@ -4,6 +4,7 @@ import com.abdelghani.chatservice.entities.Message;
 import com.abdelghani.chatservice.entities.User;
 import com.abdelghani.chatservice.repository.MessageRepository;
 import com.abdelghani.chatservice.repository.UserRepository;
+import com.abdelghani.chatservice.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/messages")
+@CrossOrigin("*")
 public class MessageController {
 
     @Autowired
@@ -18,6 +20,9 @@ public class MessageController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private MessageService messageService;
 
     @GetMapping
     public List<Message> getAllMessages() {
@@ -35,4 +40,10 @@ public class MessageController {
         User user2 = userRepository.findById(userId2).orElseThrow(() -> new RuntimeException("User not found"));
         return messageRepository.findBySenderAndRecipientOrRecipientAndSender(user1, user2, user2, user1);
     }
+
+    @PostMapping
+    public Message createMessage(@RequestBody Message message) {
+        return messageService.saveMessage(message);
+    }
+
 }

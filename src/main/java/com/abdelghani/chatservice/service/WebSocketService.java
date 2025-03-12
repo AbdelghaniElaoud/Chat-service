@@ -52,5 +52,14 @@ public class WebSocketService {
     public List<Message> loadMessagesBetweenUsers(User user1, User user2) {
         return messageRepository.findBySenderAndRecipientOrRecipientAndSender(user1, user2, user2, user1);
     }
+
+//    public void sendMessage(String senderUsername, String content, String recipientUsername) {
+//        Message message = new Message();
+//        message.setSenderUsername(senderUsername);
+//        message.setContent(content);
+//        message.setRecipientUsername(recipientUsername);
+//        message.setTimestamp(LocalDateTime.now());
+//        messagingTemplate.convertAndSend("/app/chat.sendMessage", message);
+//    }
 }
 
