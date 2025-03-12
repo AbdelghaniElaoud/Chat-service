@@ -10,6 +10,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class WebSocketService {
@@ -23,17 +24,17 @@ public class WebSocketService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    public void saveMessage(String senderUsername, String content, WsChatMessageType type) {
+    public void saveMessage(String senderUsername, String content, WsChatMessageType type, User recipient) {
         User sender = userRepository.findByUsername(senderUsername);
         Message message = new Message();
         message.setContent(content);
         message.setType(type);
         message.setSender(sender);
+        message.setRecipient(recipient);
         message.setTimestamp(LocalDateTime.now());
         messageRepository.save(message);
 
-        // Broadcast the message to all connected clients
-        messagingTemplate.convertAndSend("/topic/public", message);
+        messagingTemplate.convertAndSendToUser(recipient.getUsername(), "/messages", message);
     }
 
     public String addUser(String username){
@@ -47,4 +48,9 @@ public class WebSocketService {
         userRepository.save(user);
         return username;
     }
+
+    public List<Message> loadMessagesBetweenUsers(User user1, User user2) {
+        return messageRepository.findBySenderAndRecipientOrRecipientAndSender(user1, user2, user2, user1);
+    }
 }
+

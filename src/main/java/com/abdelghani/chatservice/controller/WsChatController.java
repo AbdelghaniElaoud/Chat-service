@@ -20,7 +20,7 @@ public class WsChatController {
     public ResponseEntity<WsChatMessage> sendMessage(@Payload WsChatMessage msg) {
         // Log the sender and content of the message for debugging
         System.out.println("Message received from " + msg.getSender() + ": " + msg.getContent());
-        webSocketService.saveMessage(msg.getSender(), msg.getContent(), WsChatMessageType.CHAT);
+        webSocketService.saveMessage(msg.getSender(), msg.getContent(), WsChatMessageType.CHAT,null);
 
         // Broadcast the message to all subscribers on the "/topic/public" topic
         return new ResponseEntity<>(msg, HttpStatus.OK);
@@ -37,7 +37,7 @@ public class WsChatController {
 
         webSocketService.addUser(msg.getSender());
         if (msg.getType() == WsChatMessageType.JOIN) {
-            webSocketService.saveMessage(msg.getSender(), msg.getSender() + " joined", WsChatMessageType.JOIN);
+            webSocketService.saveMessage(msg.getSender(), msg.getSender() + " joined", WsChatMessageType.JOIN, null);
         }
 
         // Broadcast the user join event to all subscribers on the "/topic/chat" topic

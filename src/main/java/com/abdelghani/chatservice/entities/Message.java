@@ -1,7 +1,6 @@
 package com.abdelghani.chatservice.entities;
 
 import com.abdelghani.chatservice.controller.WsChatMessageType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,8 +28,10 @@ public class Message {
     @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
 
+    @ManyToOne
+    @JoinColumn(name = "recipient_id", nullable = false)
+    private User recipient;
+
     @Column(nullable = false)
     private LocalDateTime timestamp;
-
-    // Getters and Setters
 }
