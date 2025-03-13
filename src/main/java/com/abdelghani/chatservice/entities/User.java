@@ -28,13 +28,13 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Message> messages;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_contacts",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "contact_id")
-    )
-    private Set<User> contacts = new HashSet<>();
+//    @ManyToMany
+//    @JoinTable(
+//            name = "user_contacts",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "contact_id")
+//    )
+//    private Set<User> contacts = new HashSet<>();
 
 
 
