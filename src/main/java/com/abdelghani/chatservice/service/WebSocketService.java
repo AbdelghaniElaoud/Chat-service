@@ -37,10 +37,10 @@ public class WebSocketService {
         messagingTemplate.convertAndSendToUser(recipient.getUsername(), "/messages", message);
     }
 
-    public String addUser(String username){
+    public String addUser(String username) {
         User userOptional = userRepository.findByUsername(username);
-        if (!(userOptional == null)){
-            throw new RuntimeException("User already in the databse");
+        if (userOptional != null) {
+            throw new RuntimeException("User already in the database");
         }
         User user = User.builder()
                 .username(username)
@@ -52,14 +52,4 @@ public class WebSocketService {
     public List<Message> loadMessagesBetweenUsers(User user1, User user2) {
         return messageRepository.findBySenderAndRecipientOrRecipientAndSender(user1, user2, user2, user1);
     }
-
-//    public void sendMessage(String senderUsername, String content, String recipientUsername) {
-//        Message message = new Message();
-//        message.setSenderUsername(senderUsername);
-//        message.setContent(content);
-//        message.setRecipientUsername(recipientUsername);
-//        message.setTimestamp(LocalDateTime.now());
-//        messagingTemplate.convertAndSend("/app/chat.sendMessage", message);
-//    }
 }
-
