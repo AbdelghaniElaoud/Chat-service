@@ -30,7 +30,7 @@ public class WsChatController {
         System.out.println("Message received from " + msg.getSender() + ": " + msg.getContent());
 
         User recipient = userRepository.findByUsername(msg.getRecipient());
-        webSocketService.saveMessage(msg.getSender(), msg.getContent(), WsChatMessageType.CHAT, recipient);
+        webSocketService.saveMessage(msg.getSender(), msg.getRecipient(), msg.getContent());
 
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
@@ -43,7 +43,7 @@ public class WsChatController {
 
         webSocketService.addUser(msg.getSender());
         if (msg.getType() == WsChatMessageType.JOIN) {
-            webSocketService.saveMessage(msg.getSender(), msg.getSender() + " joined", WsChatMessageType.JOIN, null);
+            webSocketService.saveMessage(msg.getSender(), msg.getRecipient(), msg.getContent());
         }
 
         return msg;

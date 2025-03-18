@@ -24,18 +24,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private List<Message> messages;
-
-//    @ManyToMany
-//    @JoinTable(
-//            name = "user_contacts",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "contact_id")
-//    )
-//    private Set<User> contacts = new HashSet<>();
-
 
 
 }

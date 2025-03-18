@@ -1,8 +1,10 @@
 package com.abdelghani.chatservice.service;
 
 import com.abdelghani.chatservice.controller.WsChatMessageType;
+import com.abdelghani.chatservice.entities.Conversation;
 import com.abdelghani.chatservice.entities.Message;
 import com.abdelghani.chatservice.entities.User;
+import com.abdelghani.chatservice.repository.ConversationRepository;
 import com.abdelghani.chatservice.repository.MessageRepository;
 import com.abdelghani.chatservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WebSocketService {
@@ -24,17 +27,21 @@ public class WebSocketService {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    public void saveMessage(String senderUsername, String content, WsChatMessageType type, User recipient) {
+    @Autowired
+    private ConversationService conversationService;
+    @Autowired
+    private ConversationRepository conversationRepository;
+
+    public void saveMessage(String senderUsername, String receiverUsername, String content) {
         User sender = userRepository.findByUsername(senderUsername);
+        User receiver = userRepository.findByUsername(receiverUsername);
+        Conversation conversation = conversationService.getOrCreateConversation(sender, receiver);
         Message message = new Message();
         message.setContent(content);
-        message.setType(type);
-        message.setSender(sender);
-        message.setRecipient(recipient);
-        message.setTimestamp(LocalDateTime.now());
+        message.setConversation(conversation);
         messageRepository.save(message);
 
-        messagingTemplate.convertAndSendToUser(recipient.getUsername(), "/messages", message);
+        messagingTemplate.convertAndSendToUser(receiverUsername, "/user/" + receiverUsername + "/messages/" + conversation.getId(), message);
     }
 
     public String addUser(String username) {
@@ -49,7 +56,8 @@ public class WebSocketService {
         return username;
     }
 
-    public List<Message> loadMessagesBetweenUsers(User user1, User user2) {
-        return messageRepository.findBySenderAndRecipientOrRecipientAndSender(user1, user2, user2, user1);
+    public List<Message> loadMessagesForConversation(Long conversationId) {
+        Conversation conversationOptional = conversationRepository.findById(conversationId).get();
+        return messageRepository.findByConversation(conversationOptional);
     }
 }
