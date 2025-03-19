@@ -30,7 +30,7 @@ public class WsChatController {
         System.out.println("Message received from " + msg.getSender() + ": " + msg.getContent());
 
         User recipient = userRepository.findByUsername(msg.getRecipient());
-        webSocketService.saveMessage(msg.getSender(), msg.getRecipient(), msg.getContent());
+        //webSocketService.saveMessage(msg.getSender(), msg.getRecipient(), msg.getContent());
 
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }

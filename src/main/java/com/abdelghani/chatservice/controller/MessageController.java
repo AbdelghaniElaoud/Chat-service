@@ -1,5 +1,6 @@
 package com.abdelghani.chatservice.controller;
 
+import com.abdelghani.chatservice.DTO.MessageDTO;
 import com.abdelghani.chatservice.entities.Conversation;
 import com.abdelghani.chatservice.entities.Message;
 import com.abdelghani.chatservice.entities.User;
@@ -47,6 +48,11 @@ public class MessageController {
     @PostMapping
     public Message createMessage(@RequestBody Message message) {
         return messageService.saveMessage(message.getContent(), message.getConversation());
+    }
+
+    @PostMapping("/create")
+    public Message createMessageWithDTO(@RequestBody MessageDTO messageDTO) {
+        return messageService.saveMessageUsingMessageDTO(messageDTO);
     }
 
     @PostMapping("/conversation")

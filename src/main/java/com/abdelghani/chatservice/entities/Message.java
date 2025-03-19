@@ -2,8 +2,7 @@ package com.abdelghani.chatservice.entities;
 
 import com.abdelghani.chatservice.controller.WsChatMessageType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +10,9 @@ import java.time.LocalDateTime;
 @Table(name = "messages")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
