@@ -1,5 +1,6 @@
 package com.abdelghani.chatservice.controller;
 
+import com.abdelghani.chatservice.DTO.ConversationDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,5 +19,7 @@ public class WsChatMessage {
     private String recipient;
     private String content;
     private WsChatMessageType type;
+    private ConversationDto conversation;
+    private String conv;
 
 }

@@ -29,8 +29,9 @@ public class WsChatController {
     public ResponseEntity<WsChatMessage> sendMessage(@Payload WsChatMessage msg, SimpMessageHeaderAccessor headerAccessor) {
         System.out.println("Message received from " + msg.getSender() + ": " + msg.getContent());
 
-        User recipient = userRepository.findByUsername(msg.getRecipient());
-        //webSocketService.saveMessage(msg.getSender(), msg.getRecipient(), msg.getContent());
+
+        System.out.println("The conversation Id is" + msg.getConversation().getId());
+        webSocketService.saveMessage(msg.getConversation(), msg.getContent());
 
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
@@ -43,7 +44,7 @@ public class WsChatController {
 
         webSocketService.addUser(msg.getSender());
         if (msg.getType() == WsChatMessageType.JOIN) {
-            webSocketService.saveMessage(msg.getSender(), msg.getRecipient(), msg.getContent());
+            webSocketService.saveMessage(msg.getConversation(), msg.getContent());
         }
 
         return msg;

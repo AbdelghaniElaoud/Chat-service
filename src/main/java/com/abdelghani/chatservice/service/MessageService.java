@@ -6,6 +6,7 @@ import com.abdelghani.chatservice.entities.Conversation;
 import com.abdelghani.chatservice.entities.Message;
 import com.abdelghani.chatservice.repository.ConversationRepository;
 import com.abdelghani.chatservice.repository.MessageRepository;
+import com.abdelghani.chatservice.utils.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class MessageService {
     }
 
     public Message saveMessageUsingMessageDTO(MessageDTO messageDTO) {
-        Conversation conversation = conversationRepository.findById(messageDTO.getConversationId()).get();
+        Conversation conversation = ObjectMapper.map(messageDTO.getConversation(), Conversation.class);
         Message message = Message.builder()
                 .type(WsChatMessageType.CHAT)
                 .content(messageDTO.getContent())

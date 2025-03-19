@@ -1,5 +1,6 @@
 package com.abdelghani.chatservice.DTO;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 @Getter
@@ -7,8 +8,10 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MessageDTO {
-    private String content;
-    private String type;
-    private ConversationDto conversation;
+public class UserDto {
+
+    private Long id;
+
+    private String username;
+
 }

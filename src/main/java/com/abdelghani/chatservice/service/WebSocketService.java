@@ -1,5 +1,7 @@
 package com.abdelghani.chatservice.service;
 
+import com.abdelghani.chatservice.DTO.ConversationDto;
+import com.abdelghani.chatservice.DTO.MessageDTO;
 import com.abdelghani.chatservice.controller.WsChatMessageType;
 import com.abdelghani.chatservice.entities.Conversation;
 import com.abdelghani.chatservice.entities.Message;
@@ -7,6 +9,7 @@ import com.abdelghani.chatservice.entities.User;
 import com.abdelghani.chatservice.repository.ConversationRepository;
 import com.abdelghani.chatservice.repository.MessageRepository;
 import com.abdelghani.chatservice.repository.UserRepository;
+import com.abdelghani.chatservice.utils.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -32,16 +35,17 @@ public class WebSocketService {
     @Autowired
     private ConversationRepository conversationRepository;
 
-    public void saveMessage(String senderUsername, String receiverUsername, String content) {
-        User sender = userRepository.findByUsername(senderUsername);
-        User receiver = userRepository.findByUsername(receiverUsername);
-        Conversation conversation = conversationService.getOrCreateConversation(sender, receiver);
-        Message message = new Message();
-        message.setContent(content);
-        message.setConversation(conversation);
-        messageRepository.save(message);
+    public void saveMessage(ConversationDto conversationDto, String content) {
 
-        messagingTemplate.convertAndSendToUser(receiverUsername, "/user/" + receiverUsername + "/messages/" + conversation.getId(), message);
+
+        MessageDTO message = MessageDTO.builder()
+                .content(content)
+                .conversation(conversationDto)
+                .type("CHAT")
+                .build();
+
+
+        messagingTemplate.convertAndSendToUser(conversationDto.getReceiver().getUsername(), "/user/" + conversationDto.getReceiver() + "/messages/" + conversationDto.getId(), message);
     }
 
     public String addUser(String username) {
