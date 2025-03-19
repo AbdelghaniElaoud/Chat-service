@@ -1,8 +1,4 @@
 package com.abdelghani.chatservice.controller;
-
-import com.abdelghani.chatservice.controller.WsChatMessage;
-import com.abdelghani.chatservice.controller.WsChatMessageType;
-import com.abdelghani.chatservice.entities.User;
 import com.abdelghani.chatservice.repository.UserRepository;
 import com.abdelghani.chatservice.service.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;

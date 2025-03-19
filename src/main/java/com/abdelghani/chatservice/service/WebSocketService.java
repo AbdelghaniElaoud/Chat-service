@@ -44,8 +44,8 @@ public class WebSocketService {
                 .type("CHAT")
                 .build();
 
-
-        messagingTemplate.convertAndSendToUser(conversationDto.getReceiver().getUsername(), "/user/" + conversationDto.getReceiver() + "/messages/" + conversationDto.getId(), message);
+        System.out.println("/user/" + conversationDto.getId() + "/messages/");
+        messagingTemplate.convertAndSendToUser(conversationDto.getReceiver().getUsername(), "/user/" + conversationDto.getId() + "/messages/", message);
     }
 
     public String addUser(String username) {
